@@ -1,1 +1,7 @@
-homework not found!!
+<div id="doc" class="markdown-body container-fluid"><h1 id="106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</h1><blockquote>
+<p>組長：B10415019 張祖浩<br>
+組員：B10415020 蔡奕德<br>
+組員：B10415045 施泓仰</p>
+</blockquote><hr><h1 id="🤔-功能是什麼？">🤔 功能是什麼？</h1><p>將process加入執行優先權和計時器，使得xv6可用來處理時間敏感的process，只要process內的counter到指定秒數的時候，這個process就會被提高一個執行優先權。</p><hr><h1 id="😇-如何實作？">😇 如何實作？</h1><p>在process的結構中新增執行優先權和計時器的相關變數。主要功能方面，執行優先權的部分，會在proc.c内實作一個改變protity的method。而計時器的部分，會在trap.c內做修改，使得每個process都有自己的計時器能計時。</p><hr><h1 id="🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</h1><p>若使用者編寫的是一個對時間較敏感的程式，那他就能透過這個system call指定這個process的限制時間，只要超過這個時間，process就會自動提高一個執行優先權。</p><hr><h1 id="👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</h1><p>張祖浩:資料收集、執行優先權實作<br>
+蔡奕德:構想書製作、製作報告<br>
+施泓仰:資料收集、計時器實作</p><hr><h1 id="📅-時程甘特圖">📅 時程甘特圖</h1><p><a href="https://docs.google.com/spreadsheets/d/1Z29s3RKlusL9Jb4buZSLkIG0dlMxp3fQS9ysOYIaGrw/edit?usp=sharing" target="_blank">https://docs.google.com/spreadsheets/d/1Z29s3RKlusL9Jb4buZSLkIG0dlMxp3fQS9ysOYIaGrw/edit?usp=sharing</a></p><hr></div>
