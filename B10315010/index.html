@@ -42,29 +42,29 @@
 組員：學號、姓名</p>
 </blockquote><hr><h1 id="🤔-功能是什麼？"><a class="anchor hidden-xs" href="#🤔-功能是什麼？" title="🤔-功能是什麼？"><span class="octicon octicon-link"></span></a>🤔 功能是什麼？</h1><p>1.<strong>對索求過多lock次數的低使用率process進行管理 :</strong> 一個process在acquire以及release lock(e.g. spin-lock)時，會進行context switch(包含directly blocking其他process)，導致特定process執行次數太多，會造成系統上的延遲。</p><p>2.<strong>關機 :</strong> 在VM時執行xv6時偶然發現沒有像是exit()那樣可以終止終端機執行的方法，只能按下ctrl+alt後用滑鼠將xv6視窗關閉。</p><hr><h1 id="😇-如何實作？"><a class="anchor hidden-xs" href="#😇-如何實作？" title="😇-如何實作？"><span class="octicon octicon-link"></span></a>😇 如何實作？</h1><ul>
 <li>
-<p>在spin-lock中加入紀錄使用lock次數的usetable資料結構，紀錄各process使用lock的情況，若在一段時間內(e.g. 10sec)中特定process每次執行都需要process的話，就會降低其priority以減少context switch的情況。</p>
+<p><strong>sys_chpriority :</strong> 在spin-lock中加入紀錄使用lock次數的usetable資料結構，紀錄各process使用lock的情況，若在一段時間內(e.g. 10sec)中特定process每次執行都需要process的話，就會降低其priority以減少context switch的情況。</p>
 </li>
 <li>
 <p>加入setlockcheckingtime()以設定此程式執行頻率。</p>
 </li>
 <li>
-<p>由於這方面比較沒有相關資料，因此會去查詢曾經遇過相同問題的xv6使用者是否有這方面的經驗。(暫定是以exit() 作為函式名稱)</p>
+<p><strong>sys_xv6exit :</strong> 由於這方面比較沒有相關資料，因此會去查詢曾經遇過相同問題的xv6使用者是否有這方面的經驗。(暫定是以使用者呼叫時是以exit()作為函式名稱)</p>
 </li>
 </ul><p>簡易流程圖:</p><p><img src="https://i.imgur.com/wvIah7A.jpg" alt=""></p><hr><h1 id="🐻-預期成效（怎麼用、誰用）"><a class="anchor hidden-xs" href="#🐻-預期成效（怎麼用、誰用）" title="🐻-預期成效（怎麼用、誰用）"><span class="octicon octicon-link"></span></a>🐻 預期成效（怎麼用、誰用）</h1><p>1.一段時間後找出符合條件的process並降低其priority。</p><p>2.基底是以每10秒檢查一次各process使用lock的次數，使用者可在setlockcheckingtime()輸入一個數字(暫定以秒為單位)改變檢查的時間，若輸入-1則是關閉此功能。</p><p>3.使用者希望結束xv6時，只要輸入exit()即能離開。</p><hr><h1 id="👨‍👦‍👦-組員分工"><a class="anchor hidden-xs" href="#👨‍👦‍👦-組員分工" title="👨‍👦‍👦-組員分工"><span class="octicon octicon-link"></span></a>👨‍👦‍👦 組員分工</h1><p>本人:撰寫功能/單元測試/註解</p><hr><h1 id="📅-時程甘特圖"><a class="anchor hidden-xs" href="#📅-時程甘特圖" title="📅-時程甘特圖"><span class="octicon octicon-link"></span></a>📅 時程甘特圖</h1><p>時間上可能估計方面有若干誤差，因為這個軟體不把周休二日排入行程內。</p><p><img src="https://i.imgur.com/1trzi4y.jpg" alt=""></p><p><img src="https://i.imgur.com/ekTyN8r.jpg" alt=""></p><hr><p>甘特圖製作參考:<br>
 <a href="http://www.playpcesor.com/2015/04/google-drive-gantter.html" target="_blank">http://www.playpcesor.com/2015/04/google-drive-gantter.html</a></p><p>流程圖製作參考:<br>
-<a href="http://www.playpcesor.com/2015/02/drawio.html" target="_blank">http://www.playpcesor.com/2015/02/drawio.html</a></p><div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: 0s; width: 100000px; height: 100000px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div></div>
+<a href="http://www.playpcesor.com/2015/02/drawio.html" target="_blank">http://www.playpcesor.com/2015/02/drawio.html</a></p></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
             <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
                 <i class="fa fa-bars"></i>
             </a>
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
-                <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li class=""><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li class=""><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+                <div class="toc"><ul class="nav"><li><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
             </ul>
         </div>
     </div>
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
-        <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li class=""><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li class=""><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+        <div class="toc"><ul class="nav"><li><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
