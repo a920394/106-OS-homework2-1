@@ -44,36 +44,36 @@
 <ol>
 <li>關機 =&gt; 關閉正在運作中的xv6。</li>
 <li>定時關機 =&gt; 設定過一段時間後，關閉xv6。</li>
-<li>設定process優先度 =&gt; 為process增加優先度功能。</li>
+<li>重新設定定時時數 =&gt; 在原設定時數到之前，重新設定時數並重新開始倒數</li>
 </ol>
 </blockquote><hr><h1 id="😇-如何實作？" style=""><a class="anchor hidden-xs" href="#😇-如何實作？" title="😇-如何實作？"><span class="octicon octicon-link"></span></a>😇 如何實作？</h1><blockquote>
 <ol>
 <li>能夠結束xv6並回到linux中。</li>
 <li>關機由第1點完成，計時部分則利用cpu的運作頻率，來做時間的計算</li>
-<li>為每一個process做priority來做控制</li>
+<li>關機程式的部分參考linux的<code>shotdown.c</code></li>
+<li>時間的計算參考linux的<code>timer.c</code></li>
 </ol>
 </blockquote><hr><h1 id="🐻-預期成效" style=""><a class="anchor hidden-xs" href="#🐻-預期成效" title="🐻-預期成效"><span class="octicon octicon-link"></span></a>🐻 預期成效</h1><blockquote>
 <ol>
-<li>讓正在運作中的xv6能夠讓使用者輸入指令(例:shutdown)，就能夠關閉xv6。</li>
-<li>讓使用者設定一定的時間，在此時間之後xv6會啟動關機程式。假設輸入"shutdown 60"，xv6在60秒後關機。</li>
-<li>使用者可以查詢每一個process並且對priority做更改。<br>
-(例: 排序: “scheduling pid newpriority”、查詢: “lspid”)。</li>
+<li>讓正在運作中的xv6能夠讓使用者輸入指令(例:<code>shutdown</code>)，就能夠關閉xv6。</li>
+<li>使用者輸入<code>setshutdown X</code>設定X秒的時間後，xv6會啟動關機程式。ex：輸入<code>setshutdown 60</code>，xv6在60秒後關機。</li>
+<li>使用者輸入<code>resetshutdown X</code>重設X秒的時間後，xv6會啟動關機程式。ex：輸入<code>resetshutdown 60</code>，xv6會重新計算60秒後關機。</li>
 </ol>
 </blockquote><hr><h1 id="👨‍👦‍👦-組員分工" style=""><a class="anchor hidden-xs" href="#👨‍👦‍👦-組員分工" title="👨‍👦‍👦-組員分工"><span class="octicon octicon-link"></span></a>👨‍👦‍👦 組員分工</h1><p><strong>張耿豪: 資料蒐集、程式撰寫、測試<br>
 林世哲: 資料蒐集、程式撰寫、測試<br>
-詹健廷: 資料蒐集、構想書編寫、程式撰寫</strong></p><hr><h1 id="📅-時程甘特圖" style=""><a class="anchor hidden-xs" href="#📅-時程甘特圖" title="📅-時程甘特圖"><span class="octicon octicon-link"></span></a>📅 時程甘特圖</h1><h2 id="tip6" style=""><a class="anchor hidden-xs" href="#" title=""><span class="octicon octicon-link"></span></a><img src="https://i.imgur.com/rzVUkIr.jpg" alt=""></h2></div>
+詹健廷: 資料蒐集、構想書編寫、程式撰寫</strong></p><hr><h1 id="📅-時程甘特圖" style=""><a class="anchor hidden-xs" href="#📅-時程甘特圖" title="📅-時程甘特圖"><span class="octicon octicon-link"></span></a>📅 時程甘特圖</h1><h2 id="tip6" style=""><a class="anchor hidden-xs" href="#" title=""><span class="octicon octicon-link"></span></a><img src="https://i.imgur.com/rzVUkIr.jpg" alt=""></h2><div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: 0s; width: 100000px; height: 100000px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
             <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
                 <i class="fa fa-bars"></i>
             </a>
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
-                <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效">🐻 預期成效</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a><ul class="nav"><li><a href="#tip6"></a></li></ul></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+                <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li class=""><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li class=""><a href="#🐻-預期成效">🐻 預期成效</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a><ul class="nav"><li><a href="#tip6"></a></li></ul></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
             </ul>
         </div>
     </div>
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
-        <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效">🐻 預期成效</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a><ul class="nav"><li><a href="#tip6"></a></li></ul></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+        <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li class=""><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li class=""><a href="#🐻-預期成效">🐻 預期成效</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a><ul class="nav"><li><a href="#tip6"></a></li></ul></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
