@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -35,18 +36,25 @@
 </head>
 
 <body>
-    <div class="markdown-body container-fluid" id="doc" style="position: relative;"><h1 id="106-os-homework-2-1-構想書"><a title="106-os-homework-2-1-構想書" class="anchor hidden-xs" href="#106-os-homework-2-1-構想書"><span class="octicon octicon-link"></span></a>106 OS homework 2-1 構想書</h1><blockquote>
+    <div id="doc" class="markdown-body container-fluid" style="position: relative;"><h1 id="106-os-homework-2-1-構想書"><a class="anchor hidden-xs" href="#106-os-homework-2-1-構想書" title="106-os-homework-2-1-構想書"><span class="octicon octicon-link"></span></a>106 OS homework 2-1 構想書</h1><blockquote>
 <p>組長：A10615003、張家成<br>
 組員：A10615001、趙梓丞<br>
 組員：A10615002、張海鯤</p>
-</blockquote><hr><h1 id="🤔-功能是什麼？"><a title="🤔-功能是什麼？" class="anchor hidden-xs" href="#🤔-功能是什麼？"><span class="octicon octicon-link"></span></a>🤔 功能是什麼？</h1><hr><div class="alert alert-info">
-<p><code>getpid(),getpriority(),setpriority()</code>分別可以獲取進程的權限等級、更改進程的權限等級以及設置進程的權限等級。</p>
-</div><h1 id="😇-如何實作？"><a title="😇-如何實作？" class="anchor hidden-xs" href="#😇-如何實作？"><span class="octicon octicon-link"></span></a>😇 如何實作？</h1><hr><div class="alert alert-info">
+</blockquote><hr><h1 id="🤔-功能是什麼？"><a class="anchor hidden-xs" href="#🤔-功能是什麼？" title="🤔-功能是什麼？"><span class="octicon octicon-link"></span></a>🤔 功能是什麼？</h1><hr><div class="alert alert-info">
+<pre><code>1.ps:獲取進程的pid
+2.getpriority():更改進程的權限等級
+3.setpriority():設置進程的權限等級
+4.nice():在進程現有的優先級情況下進行調整
+5.listpriority:列出所有進程的優先級
+</code></pre>
+</div><h1 id="😇-如何實作？"><a class="anchor hidden-xs" href="#😇-如何實作？" title="😇-如何實作？"><span class="octicon octicon-link"></span></a>😇 如何實作？</h1><hr><div class="alert alert-info">
 <p>概述：</p>
 <ol>
 <li>先實現列出系統中所有進程的pid的system call。</li>
 <li>在執行getpriority()與setpriority()前需要使用類似"ps"的指令來列出現有進程的pid。</li>
 <li>將指定進程的pid輸入到兩個system call的參數裡，可以對其優先級進行操作。</li>
+<li>將指令放在nice()指令的參數中進行調整其優先級。</li>
+<li>結合"ps"與"getpriority"兩種system call實現列出現有進程的權限等級。</li>
 </ol>
 <p>操作流程概述：</p>
 <ol>
@@ -67,17 +75,21 @@ Makefile
 <pre><code>ps.c
 getpriority.c
 setpriority.c
+nice.c
+listpriority.c
 </code></pre>
 <ol start="3">
 <li>實現過程中持續測試。</li>
 </ol>
-</div><h1 id="🐻-預期成效（怎麼用、誰用）"><a title="🐻-預期成效（怎麼用、誰用）" class="anchor hidden-xs" href="#🐻-預期成效（怎麼用、誰用）"><span class="octicon octicon-link"></span></a>🐻 預期成效（怎麼用、誰用）</h1><hr><div class="alert alert-info">
+</div><h1 id="🐻-預期成效（怎麼用、誰用）"><a class="anchor hidden-xs" href="#🐻-預期成效（怎麼用、誰用）" title="🐻-預期成效（怎麼用、誰用）"><span class="octicon octicon-link"></span></a>🐻 預期成效（怎麼用、誰用）</h1><hr><div class="alert alert-info">
 <ol>
 <li>使用類似"ps"的列出系統進程pid的system call。</li>
 <li>在上一條指令的結果中選一個進程的pid作為參數輸入到getpriority()或setpriority()中，可對該進程的優先級進行操作。</li>
 <li>system call執行成功後會出現運行情況返回值，也可以使用getpriority()來查詢是否更改成功。</li>
+<li>將需要調整優先級的進程輸入到nice()的參數中，並設置其範圍為（-20～19）的優先級來改變其運行時的優先級。</li>
+<li>在terminal中輸入"listpriority"返回現有進程權限等級。</li>
 </ol>
-</div><h1 id="👨‍👦‍👦-組員分工"><a title="👨‍👦‍👦-組員分工" class="anchor hidden-xs" href="#👨‍👦‍👦-組員分工"><span class="octicon octicon-link"></span></a>👨‍👦‍👦 組員分工</h1><hr><table>
+</div><h1 id="👨‍👦‍👦-組員分工"><a class="anchor hidden-xs" href="#👨‍👦‍👦-組員分工" title="👨‍👦‍👦-組員分工"><span class="octicon octicon-link"></span></a>👨‍👦‍👦 組員分工</h1><hr><table>
 <thead>
 <tr>
 <th style="text-align:center">組員</th>
@@ -87,30 +99,30 @@ setpriority.c
 <tbody>
 <tr>
 <td style="text-align:center">張家成</td>
-<td style="text-align:left">1.完成構想書 2.實現"ps"指令 3. setpriority() 4.測試</td>
+<td style="text-align:left">1.完成構想書 2."ps"指令 3. setpriority() 4."listpriority"指令 5.測試</td>
 </tr>
 <tr>
 <td style="text-align:center">張海鯤</td>
-<td style="text-align:left">1.確定需要實現的system call 2.getpriority() 3.測試</td>
+<td style="text-align:left">1.確定需要實現的system call 2.getpriority() 3.nice() 4.測試</td>
 </tr>
 <tr>
 <td style="text-align:center">趙梓丞</td>
-<td style="text-align:left">1.完成甘特圖 2.setpriority() 3.測試</td>
+<td style="text-align:left">1.完成甘特圖 2.setpriority() 3.nice() 4.測試</td>
 </tr>
 </tbody>
-</table><h1 id="📅-時程甘特圖"><a title="📅-時程甘特圖" class="anchor hidden-xs" href="#📅-時程甘特圖"><span class="octicon octicon-link"></span></a>📅 時程甘特圖</h1><hr><p><img alt="" src="https://i.imgur.com/36rBTNM.png"></p><div class="resize-sensor" style="left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; visibility: hidden; position: absolute; z-index: -1;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="transition:all; left: 0px; top: 0px; width: 100000px; height: 100000px; position: absolute;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div></div>
+</table><h1 id="📅-時程甘特圖"><a class="anchor hidden-xs" href="#📅-時程甘特圖" title="📅-時程甘特圖"><span class="octicon octicon-link"></span></a>📅 時程甘特圖</h1><hr><p><img src="https://i.imgur.com/02bf7P4.png" alt=""></p></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
             <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
                 <i class="fa fa-bars"></i>
             </a>
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
-                <div class="toc"><ul class="nav"><li><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+                <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li class=""><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li class=""><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li class=""><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
             </ul>
         </div>
     </div>
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
-        <div class="toc"><ul class="nav"><li><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li><a href="#😇-如何實作？">😇 如何實作？</a></li><li><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+        <div class="toc"><ul class="nav"><li class=""><a href="#106-os-homework-2-1-構想書">106 OS homework 2-1 構想書</a></li><li class=""><a href="#🤔-功能是什麼？">🤔 功能是什麼？</a></li><li class=""><a href="#😇-如何實作？">😇 如何實作？</a></li><li class=""><a href="#🐻-預期成效（怎麼用、誰用）">🐻 預期成效（怎麼用、誰用）</a></li><li><a href="#👨‍👦‍👦-組員分工">👨‍👦‍👦 組員分工</a></li><li class=""><a href="#📅-時程甘特圖">📅 時程甘特圖</a></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
